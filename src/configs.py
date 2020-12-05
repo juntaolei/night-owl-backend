@@ -2,6 +2,9 @@ from os import getenv
 
 
 class Config:
+    DB_HOST = None
+    DB_PASSWORD = None
+    DB_USER = None
     DEBUG = False
     HOST = "0.0.0.0"
     PORT = 5000
@@ -11,8 +14,10 @@ class Config:
 
     @property
     def SQLALCHEMY_DATABASE_URI(self):
-        if not self.DEBUG:
-            return ""
+        if not self.DEBUG and None not in (self.DB_HOST, self.DB_PASSWORD,
+                                           self.DB_USER):
+            return f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}/database"
+        return "sqlite:///local.db"
 
 
 class DevelopmentConfig(Config):
@@ -22,4 +27,6 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
-    pass
+    DB_HOST = getenv("POSTGRES_HOST", None)
+    DB_PASSWORD = getenv("POSTGRES_PASSWORD", None)
+    DB_USER = getenv("POSTGRES_USER", None)
