@@ -15,8 +15,8 @@ class Config:
 
     @property
     def SQLALCHEMY_DATABASE_URI(self):
-        if not self.DEBUG and None in (self.DB_HOST, self.DB_PASSWORD,
-                                       self.DB_USER):
+        if not self.DEBUG and None not in (self.DB_HOST, self.DB_PASSWORD,
+                                           self.DB_USER):
             return f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}/database"
         return "sqlite:///local.db"
 
