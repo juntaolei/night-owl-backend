@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous import (TimedJSONWebSignatureSerializer as JWS, BadSignature,
                           SignatureExpired)
