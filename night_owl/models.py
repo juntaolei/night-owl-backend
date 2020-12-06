@@ -25,3 +25,13 @@ class User(db.Model):
 
     def check_password(self, given_password):
         return check_password_hash(self.password, given_password)
+
+
+class Session(db.Model):
+    __tablename__ = "session"
+
+    id = db.Column(db.Integer, primary_key=True)
+    session_token = db.Column(db.String, nullable=False)
+    expires_at = db.Column(db.DateTime, nullable=False)
+    refresh_token = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
