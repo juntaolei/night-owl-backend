@@ -17,7 +17,7 @@ jobs:
       - name: Build and Push
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:push web -a ${{ secrets.HEROKU_APP_NAME }} --arg SECRET_KEY=${{ secrets.SECRET_KEY }},DB_HOST=${{ secrets.DB_HOST }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_USER=${{ secrets.DB_USER }}
+        run: heroku container:push web -a ${{ secrets.HEROKU_APP_NAME }}
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
