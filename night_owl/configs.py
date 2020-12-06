@@ -8,6 +8,7 @@ class Config:
     DEBUG = False
     HOST = "0.0.0.0"
     PORT = getenv("PORT", 5000)
+    SECRET_KEY = getenv("SECRET_KEY", "dev")
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TESTING = False

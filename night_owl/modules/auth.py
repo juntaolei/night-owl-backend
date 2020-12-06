@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 auth = Blueprint("auth", __name__, url_prefix="/api")
 
 
-class UserSchema(Schema):
+class RegistrationSchema(Schema):
     email = fields.Email()
     username = fields.Str(validate=validate.Length(min=1, max=32))
     first_name = fields.Str(validate=validate.Length(min=1, max=32))
@@ -22,22 +22,25 @@ class LoginSchema(Schema):
 
 
 class SessionTokenSchema(Schema):
-    session_token = fields.Str(validate=validate.Length(min=32, max=64))
+    session_token = fields.Str(validate=validate.Length(min=32, max=256))
 
 
-def session_token_required(f):
+class RefreshTokenSchema(Schema):
+    refresh_token = fields.Str(validate=validate.Length(min=32, max=256))
+
+
+def session_token_validation(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         try:
             request_body = SessionTokenSchema().load(request.get_json())
         except ValidationError as err:
-            return failure_response(message=err.messages, code=400)
+            return failure_response(err.messages, 400)
 
-        current_session = Session.query.filter_by(
-            session_token=request_body.get("session_token")).first()
+        valid, data = Session.verify_token(request_body.get("session_token"))
 
-        if current_session is None:
-            return failure_response("Invalid session token.")
+        if not valid:
+            return failure_response(data)
 
         return f(*args, **kwargs)
 
@@ -47,9 +50,9 @@ def session_token_required(f):
 @auth.route("/register", methods=["POST"])
 def register():
     try:
-        request_body = UserSchema().load(request.get_json())
+        request_body = RegistrationSchema().load(request.get_json())
     except ValidationError as err:
-        return failure_response(message=err.messages, code=400)
+        return failure_response(err.messages, 400)
 
     try:
         new_user = User(email=request_body.get("email"),
@@ -61,7 +64,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
     except IntegrityError:
-        return failure_response(message="User already exist.", code=500)
+        return failure_response("User already exist.", 500)
 
     return success_response(code=201)
 
@@ -78,12 +81,69 @@ def login():
     if user is None or not user.check_password(request_body.get("password")):
         return failure_response("User not found or invalid credentials.")
 
-    # Session Token To Be Implemented
-    return success_response({"token": "testing"})
+    session = Session.query.filter_by(user_id=user.id).first()
+    session_token = user.generate_session_token().decode("ascii")
+    refresh_token = user.generate_refresh_token().decode("ascii")
+
+    if session is None:
+        new_session = Session(session_token=session_token,
+                              refresh_token=refresh_token,
+                              user_id=user.id)
+
+        db.session.add(new_session)
+        db.session.commit()
+    else:
+        session.session_token = session_token
+        session.refresh_token = refresh_token
+
+        db.session.commit()
+
+    return success_response(
+        {
+            "session_token": session_token,
+            "refresh_token": refresh_token
+        }, 201)
+
+
+@auth.route("/refresh", methods=["POST"])
+def refresh():
+    try:
+        request_body = RefreshTokenSchema().load(request.get_json())
+    except ValidationError as err:
+        return failure_response(err.messages, 400)
+
+    valid, data = Session.verify_token(request_body.get("session_token"))
+
+    if not valid:
+        return failure_response(data)
+    else:
+        session = Session.query.filter_by(user_id=data.id).first()
+        session_token = data.generate_session_token().decode("ascii")
+        refresh_token = data.generate_refresh_token().decode("ascii")
+        session.session_token = session_token
+        session.refresh_token = refresh_token
+
+        db.session.commit()
+
+        return success_response(
+            {
+                "session_token": session_token,
+                "refresh_token": refresh_token
+            }, 201)
 
 
 @auth.route("/logout", methods=["POST"])
-@session_token_required
+@session_token_validation
 def logout():
-    # Logout To Be Implemented
+    try:
+        request_body = SessionTokenSchema().load(request.get_json())
+    except ValidationError as err:
+        return failure_response(err.messages, 400)
+
+    session = Session.query.filter_by(
+        session_token=request_body.get("session_token")).first()
+
+    db.session.delete(session)
+    db.session.commit()
+
     return success_response()
