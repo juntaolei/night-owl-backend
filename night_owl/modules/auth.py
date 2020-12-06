@@ -1,6 +1,6 @@
 from flask import Blueprint
-from src.models import db
-from src.utils import success_response, failure_response
+from night_owl.models import db
+from night_owl.utils import success_response, failure_response
 
 auth = Blueprint("auth", __name__, url_prefix="/api")
 
