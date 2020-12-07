@@ -7,6 +7,20 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 db = SQLAlchemy()
 
+party_image = db.Table(
+    "party_image",
+    db.Model.metadata,
+    db.Column("party_id", db.Integer, db.ForeignKey("party.id")),
+    db.Column("image_id", db.Integer, db.ForeignKey("image.id")),
+)
+
+review_image = db.Table(
+    "review_image",
+    db.Model.metadata,
+    db.Column("review_id", db.Integer, db.ForeignKey("review.id")),
+    db.Column("image_id", db.Integer, db.ForeignKey("image.id")),
+)
+
 
 class User(db.Model):
     __tablename__ = "user"
@@ -72,3 +86,50 @@ class Session(db.Model):
         user = User.query.filter_by(id=data["id"]).first()
 
         return (True, user)
+
+
+class Party(db.Model):
+    __tablename__ = "party"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.String(280), nullable=False)
+    address = db.Column(db.String(256), nullable=False)
+    admin_id = db.Column(db.Integer, nullable=False)
+    reviews = db.relationship("Review", cascade="delete")
+    images = db.relationship(
+        "Image",
+        secondary=party_image,
+        back_populates="parties",
+    )
+
+
+class Review(db.Model):
+    __tablename__ = "review"
+
+    id = db.Column(db.Integer, primary_key=True)
+    party_id = db.Column(db.Integer, db.ForeignKey("party.id"), nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+    comment = db.Column(db.String(280))
+    images = db.relationship(
+        "Image",
+        secondary=review_image,
+        back_populates="reviews",
+    )
+
+
+class Image(db.Model):
+    __tablename__ = "image"
+
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String, nullable=False)
+    parties = db.relationship(
+        "Party",
+        secondary=party_image,
+        back_populates="images",
+    )
+    reviews = db.relationship(
+        "Review",
+        secondary=review_image,
+        back_populates="images",
+    )
