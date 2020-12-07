@@ -92,7 +92,8 @@ class Party(db.Model):
     __tablename__ = "party"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), nullable=False)
+    name = db.Column(db.String(64), nullable=False)
+    datetime = db.Column(db.DateTime, nullable=False)
     description = db.Column(db.String(280), nullable=False)
     address = db.Column(db.String(256), nullable=False)
     admin_id = db.Column(db.Integer, nullable=False)
@@ -102,6 +103,18 @@ class Party(db.Model):
         secondary=party_image,
         back_populates="parties",
     )
+
+    def get_all_images(self):
+        return [i.serialize() for i in self.images]
+
+    def serialize(self):
+        return {
+            "name": self.name,
+            "description": self.description,
+            "address": self.address,
+            "admin_id": self.admin_id,
+            "images": self.get_all_images()
+        }
 
 
 class Review(db.Model):
@@ -116,6 +129,17 @@ class Review(db.Model):
         secondary=review_image,
         back_populates="reviews",
     )
+
+    def get_all_images(self):
+        return [i.serialize() for i in self.images]
+
+    def serialize(self):
+        return {
+            "party_id": self.party_id,
+            "rating": self.rating,
+            "comment": self.comment,
+            "images": self.get_all_images()
+        }
 
 
 class Image(db.Model):
@@ -133,3 +157,6 @@ class Image(db.Model):
         secondary=review_image,
         back_populates="images",
     )
+
+    def serialize(self):
+        return {"url": self.url}
