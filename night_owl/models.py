@@ -12,11 +12,11 @@ class User(db.Model):
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, nullable=False, unique=True)
-    username = db.Column(db.String, nullable=False, unique=True)
-    first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=False)
-    _password = db.Column("password", db.String, nullable=False)
+    email = db.Column(db.String(64), nullable=False, unique=True)
+    username = db.Column(db.String(64), nullable=False, unique=True)
+    first_name = db.Column(db.String(64), nullable=False)
+    last_name = db.Column(db.String(64), nullable=False)
+    _password = db.Column("password", db.String(128), nullable=False)
 
     @hybrid_property
     def password(self):
@@ -54,8 +54,8 @@ class Session(db.Model):
     __tablename__ = "session"
 
     id = db.Column(db.Integer, primary_key=True)
-    session_token = db.Column(db.String, nullable=False)
-    refresh_token = db.Column(db.String, nullable=False)
+    session_token = db.Column(db.String(512), nullable=False)
+    refresh_token = db.Column(db.String(512), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     @staticmethod

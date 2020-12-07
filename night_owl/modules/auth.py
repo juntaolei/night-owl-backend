@@ -9,24 +9,24 @@ auth = Blueprint("auth", __name__, url_prefix="/api")
 
 
 class RegistrationSchema(Schema):
-    email = fields.Email()
-    username = fields.Str(validate=validate.Length(min=1, max=32))
-    first_name = fields.Str(validate=validate.Length(min=1, max=32))
-    last_name = fields.Str(validate=validate.Length(min=1, max=32))
-    password = fields.Str(validate=validate.Length(min=12, max=64))
+    email = fields.Email(validate=validate.Length(min=1, max=64))
+    username = fields.Str(validate=validate.Length(min=1, max=64))
+    first_name = fields.Str(validate=validate.Length(min=1, max=64))
+    last_name = fields.Str(validate=validate.Length(min=1, max=64))
+    password = fields.Str(validate=validate.Length(min=12, max=128))
 
 
 class LoginSchema(Schema):
-    username = fields.Str(validate=validate.Length(min=1, max=32))
-    password = fields.Str(validate=validate.Length(min=12, max=64))
+    username = fields.Str(validate=validate.Length(min=1, max=64))
+    password = fields.Str(validate=validate.Length(min=12, max=128))
 
 
 class SessionTokenSchema(Schema):
-    session_token = fields.Str(validate=validate.Length(min=32, max=256))
+    session_token = fields.Str(validate=validate.Length(min=32, max=512))
 
 
 class RefreshTokenSchema(Schema):
-    refresh_token = fields.Str(validate=validate.Length(min=32, max=256))
+    refresh_token = fields.Str(validate=validate.Length(min=32, max=512))
 
 
 def session_token_validation(f):
@@ -91,12 +91,11 @@ def login():
                               user_id=user.id)
 
         db.session.add(new_session)
-        db.session.commit()
     else:
         session.session_token = session_token
         session.refresh_token = refresh_token
 
-        db.session.commit()
+    db.session.commit()
 
     return success_response(
         {
@@ -118,8 +117,13 @@ def refresh():
         return failure_response(data)
     else:
         session = Session.query.filter_by(user_id=data.id).first()
+
+        if session is None:
+            return failure_response("Session not found.")
+
         session_token = data.generate_session_token().decode("ascii")
         refresh_token = data.generate_refresh_token().decode("ascii")
+
         session.session_token = session_token
         session.refresh_token = refresh_token
 
@@ -142,6 +146,9 @@ def logout():
 
     session = Session.query.filter_by(
         session_token=request_body.get("session_token")).first()
+
+    if session is None:
+        return failure_response("Session not found.")
 
     db.session.delete(session)
     db.session.commit()
