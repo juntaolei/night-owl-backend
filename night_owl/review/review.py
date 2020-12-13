@@ -1,9 +1,10 @@
+from night_owl.auth.auth import validate_token
 from .models import Review
 from .schemas import ReviewSchema
 from flask import abort, Blueprint, request
 from marshmallow import ValidationError
 from night_owl import db, image
-from night_owl.auth import validate_session, Session
+from night_owl.auth import validate_session, validate_token, Session
 from night_owl.party import Party
 
 review = Blueprint("review", __name__, url_prefix="/api")
@@ -19,6 +20,7 @@ def get_reviews(party_id):
 
 
 @review.route("/party/<int:party_id>/review/add", methods=["POST"])
+@validate_token
 @validate_session
 def add_review(party_id):
     try:
@@ -45,6 +47,7 @@ def add_review(party_id):
 
 @review.route("/party/<int:party_id>/review/<int:review_id>/delete",
               methods=["DELETE"])
+@validate_token
 @validate_session
 def delete_party(party_id, review_id):
     Party.query.filter_by(id=party_id).first_or_404()

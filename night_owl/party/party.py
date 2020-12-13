@@ -1,3 +1,4 @@
+from night_owl.auth.auth import validate_token
 from .models import Party
 from .schemas import PartySchema
 from flask import abort, Blueprint, request
@@ -25,6 +26,7 @@ def get_a_party(party_id):
 
 
 @party.route("/party/add", methods=["POST"])
+@validate_token
 @validate_session
 def add_party():
     try:
@@ -49,6 +51,7 @@ def add_party():
 
 
 @party.route("/party/<int:party_id>/delete", methods=["DELETE"])
+@validate_token
 @validate_session
 def delete_party(party_id):
     party = Party.query.filter_by(id=party_id).first_or_404()

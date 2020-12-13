@@ -216,3 +216,8 @@ class AuthTest(TestCase):
         )
         self.assertEqual("User logged out.", response.json["message"])
         self.assertEqual(201, response.status_code)
+    
+    def test_login_logout(self):
+        self.test_register()
+        self.test_login()
+        self.test_logout()

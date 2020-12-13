@@ -55,7 +55,9 @@ def login_user():
     try:
         data = LoginSchema().load(request.get_json())
         user = User.verify_user(data.get("username"), data.get("password"))
+        print(user)
         auth_tokens = user.refresh_tokens()
+        db.session.commit()
         response = {**auth_tokens, **user.serialize()}
         return {"success": True, "data": response}, 201
     except ValidationError as err:
@@ -82,6 +84,7 @@ def refresh_session():
 def logout():
     token = request.headers.get("Authorization")
     session = Session.query.filter_by(session_token=token).first_or_404()
-    db.session.delete(session)
+    session.session_token = None
+    session.refresh_token = None
     db.session.commit()
     return {"success": True, "message": "User logged out."}, 201
