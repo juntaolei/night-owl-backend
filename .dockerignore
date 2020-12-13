@@ -1,0 +1,7 @@
+__pycache__
+venv
+instance
+README.md
+.github
+.vscode
+tests
