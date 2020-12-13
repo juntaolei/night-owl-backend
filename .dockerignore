@@ -1,6 +1,7 @@
 __pycache__
 venv
-env
-secrets.env
 instance
 README.md
+.github
+.vscode
+tests
