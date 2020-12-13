@@ -46,7 +46,7 @@ def register_user():
         return {"success": True, "message": "User created."}, 201
     except ValidationError as err:
         return {"success": False, "message": err.messages}, 400
-    except Exception:
+    except:
         abort(500)
 
 
@@ -55,7 +55,6 @@ def login_user():
     try:
         data = LoginSchema().load(request.get_json())
         user = User.verify_user(data.get("username"), data.get("password"))
-        print(user)
         auth_tokens = user.refresh_tokens()
         db.session.commit()
         response = {**auth_tokens, **user.serialize()}

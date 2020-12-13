@@ -219,5 +219,24 @@ class AuthTest(TestCase):
     
     def test_login_logout(self):
         self.test_register()
-        self.test_login()
-        self.test_logout()
+        for i in range(0, 10):
+            payload = dumps({
+                "username": "johndoe1",
+                "password": "thisisasecurepassword"
+            })
+            response = self.test_client.post(
+                "/api/login",
+                headers={"Content-Type": "application/json"},
+                data=payload,
+            )
+            self.assertEqual(str, type(response.json["data"]["session_token"]))
+            self.assertEqual(str, type(response.json["data"]["refresh_token"]))
+            self.assertEqual("johndoe1", response.json["data"]["username"])
+            self.assertEqual(201, response.status_code)
+            session_token = response.json["data"]["session_token"]
+            response = self.test_client.delete(
+                "/api/logout",
+                headers={"Authorization": session_token},
+            )
+            self.assertEqual("User logged out.", response.json["message"])
+            self.assertEqual(201, response.status_code)
