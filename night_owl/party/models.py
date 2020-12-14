@@ -28,7 +28,7 @@ class Party(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "datetime": self.datetime,
+            "datetime": self.datetime.isoformat(),
             "description": self.description,
             "address": self.address,
             "admin_id": self.admin_id,
