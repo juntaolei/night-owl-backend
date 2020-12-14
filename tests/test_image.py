@@ -52,7 +52,7 @@ class ImageTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -93,7 +93,7 @@ class ImageTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -102,7 +102,7 @@ class ImageTest(TestCase):
             "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )

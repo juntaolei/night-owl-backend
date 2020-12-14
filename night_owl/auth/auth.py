@@ -11,7 +11,9 @@ auth = Blueprint("auth", __name__, url_prefix="/api")
 def validate_token(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        token = request.headers.get("Authorization")
+        token = request.headers.get("Authorization", "")
+        if len(token) > 0:
+            token = token.split(" ")[1]
         res = Session.verify_token(token)
         if res is not None:
             return {"success": False, "message": res}, 400
@@ -23,7 +25,9 @@ def validate_token(f):
 def validate_session(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        token = request.headers.get("Authorization")
+        token = request.headers.get("Authorization", "")
+        if len(token) > 0:
+            token = token.split(" ")[1]
         Session.query.filter_by(session_token=token).first_or_404()
         return f(*args, **kwargs)
 
@@ -70,7 +74,9 @@ def login_user():
 @auth.route("/refresh/", methods=["PATCH"])
 @validate_token
 def refresh_session():
-    token = request.headers.get("Authorization")
+    token = request.headers.get("Authorization", "")
+    if len(token) > 0:
+        token = token.split(" ")[1]
     session = Session.query.filter_by(refresh_token=token).first_or_404()
     session.new_tokens()
     db.session.commit()
@@ -81,7 +87,9 @@ def refresh_session():
 @validate_token
 @validate_session
 def logout():
-    token = request.headers.get("Authorization")
+    token = request.headers.get("Authorization", "")
+    if len(token) > 0:
+        token = token.split(" ")[1]
     session = Session.query.filter_by(session_token=token).first_or_404()
     session.session_token = None
     session.refresh_token = None

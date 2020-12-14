@@ -148,7 +148,7 @@ class AuthTest(TestCase):
         session_token = response.json["data"]["session_token"]
         response = self.test_client.patch(
             "/api/refresh/",
-            headers={"Authorization": session_token},
+            headers={"Authorization": f"Bearer {session_token}"},
         )
         self.assertEqual(
             "Requested resource not found.",
@@ -170,7 +170,7 @@ class AuthTest(TestCase):
         refresh_token = response.json["data"]["refresh_token"]
         response = self.test_client.patch(
             "/api/refresh/",
-            headers={"Authorization": refresh_token},
+            headers={"Authorization": f"Bearer {refresh_token}"},
         )
         self.assertEqual(str, type(response.json["data"]["session_token"]))
         self.assertEqual(str, type(response.json["data"]["refresh_token"]))
@@ -190,7 +190,7 @@ class AuthTest(TestCase):
         session_token = response.json["data"]["session_token"]
         response = self.test_client.patch(
             "/api/refresh/",
-            headers={"Authorization": session_token},
+            headers={"Authorization": f"Bearer {session_token}"},
         )
         self.assertEqual(
             "Requested resource not found.",
@@ -212,7 +212,7 @@ class AuthTest(TestCase):
         session_token = response.json["data"]["session_token"]
         response = self.test_client.delete(
             "/api/logout/",
-            headers={"Authorization": session_token},
+            headers={"Authorization": f"Bearer {session_token}"},
         )
         self.assertEqual("User logged out.", response.json["message"])
         self.assertEqual(201, response.status_code)
@@ -236,7 +236,7 @@ class AuthTest(TestCase):
             session_token = response.json["data"]["session_token"]
             response = self.test_client.delete(
                 "/api/logout/",
-                headers={"Authorization": session_token},
+                headers={"Authorization": f"Bearer {session_token}"},
             )
             self.assertEqual("User logged out.", response.json["message"])
             self.assertEqual(201, response.status_code)

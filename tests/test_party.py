@@ -72,7 +72,7 @@ class PartyTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -117,7 +117,7 @@ class PartyTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -152,7 +152,7 @@ class PartyTest(TestCase):
             "/api/party/1/delete/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
         )
         self.assertEqual("Unauthorized request.", response.json["message"])
@@ -174,7 +174,7 @@ class PartyTest(TestCase):
             "/api/party/1/delete/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
         )
         self.assertEqual("Christmas Party", response.json["data"]["name"])

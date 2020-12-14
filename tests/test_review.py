@@ -58,7 +58,7 @@ class ReviewTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -101,7 +101,7 @@ class ReviewTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -110,7 +110,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -155,7 +155,7 @@ class ReviewTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -164,7 +164,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -175,7 +175,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -186,7 +186,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -228,7 +228,7 @@ class ReviewTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -237,7 +237,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -245,7 +245,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/2/delete/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
         )
         self.assertEqual(
@@ -257,7 +257,7 @@ class ReviewTest(TestCase):
             "/api/party/2/review/2/delete/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
         )
         self.assertEqual(
@@ -291,7 +291,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/1/delete/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
         )
         self.assertEqual(
@@ -335,7 +335,7 @@ class ReviewTest(TestCase):
             "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -344,7 +344,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
             data=payload,
         )
@@ -352,7 +352,7 @@ class ReviewTest(TestCase):
             "/api/party/1/review/1/delete/",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": session_token
+                "Authorization": f"Bearer {session_token}"
             },
         )
         self.assertEqual(4.5, response.json["data"]["rating"])

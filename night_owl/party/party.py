@@ -31,13 +31,15 @@ def get_a_party(party_id):
 def add_party():
     try:
         data = PartySchema().load(request.get_json())
+        token = request.headers.get("Authorization", "")
+        if len(token) > 0:
+            token = token.split(" ")[1]
         new_party = Party(
             name=data.get("name"),
             datetime=data.get("datetime"),
             description=data.get("description"),
             address=data.get("address"),
-            admin_id=Session.extract_user_id(
-                request.headers.get("Authorization")),
+            admin_id=Session.extract_user_id(token),
         )
         if len(data.get("images", [])) > 0:
             image.upload(new_party, data.get("images"))
@@ -55,7 +57,9 @@ def add_party():
 @validate_session
 def delete_party(party_id):
     party = Party.query.filter_by(id=party_id).first_or_404()
-    token = request.headers.get("Authorization")
+    token = request.headers.get("Authorization", "")
+    if len(token) > 0:
+        token = token.split(" ")[1]
     user_id = Session.extract_user_id(token)
     if party.admin_id != user_id:
         abort(401)

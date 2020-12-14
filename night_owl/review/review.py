@@ -26,7 +26,9 @@ def add_review(party_id):
     try:
         data = ReviewSchema().load(request.get_json())
         party = Party.query.filter_by(id=party_id).first_or_404()
-        token = request.headers.get("Authorization")
+        token = request.headers.get("Authorization", "")
+        if len(token) > 0:
+            token = token.split(" ")[1]
         user_id = Session.extract_user_id(token)
         new_review = Review(
             user_id=user_id,
@@ -52,7 +54,9 @@ def add_review(party_id):
 def delete_party(party_id, review_id):
     Party.query.filter_by(id=party_id).first_or_404()
     review = Review.query.filter_by(id=review_id).first_or_404()
-    token = request.headers.get("Authorization")
+    token = request.headers.get("Authorization", "")
+    if len(token) > 0:
+        token = token.split(" ")[1]
     user_id = Session.extract_user_id(token)
     if review.user_id != user_id:
         abort(401)
