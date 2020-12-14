@@ -2,6 +2,12 @@
 
 ---
 
+## [API Documentation](https://app.swaggerhub.com/apis-docs/juntaolei/night-owl/1.0.0)
+
+---
+
+---
+
 ## Development
 
 ---
@@ -51,9 +57,3 @@ Add the following configuration variables on Heroku:
 * DATABASE_URL (Heroku PostgreSQL)
 * GCS_BUCKET
 * GCS_CREDENTIALS (Google Service Account)
-
----
-
-## [API Documentation](https://app.swaggerhub.com/apis-docs/juntaolei/night-owl/1.0.0)
-
----
