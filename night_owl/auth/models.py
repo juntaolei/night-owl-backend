@@ -98,13 +98,3 @@ class Session(db.Model):
             return "Bad token."
         except:
             return "Invalid token."
-
-    @staticmethod
-    def verify_session(token):
-        res = Session.verify_token(token)
-        if res is not None:
-            return res
-        session = Session.query.filter_by(session_token=token).first()
-        if session is None:
-            return "Invalid session."
-        return None

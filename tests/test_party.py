@@ -16,16 +16,16 @@ class PartyTest(TestCase):
             db.create_all()
 
     def test_get_all_parties(self):
-        response = self.test_client.get("/api/party/all")
+        response = self.test_client.get("/api/party/all/")
         self.assertEqual([], response.json["data"])
         self.assertEqual(200, response.status_code)
         self.test_create_party()
-        response = self.test_client.get("/api/party/all")
+        response = self.test_client.get("/api/party/all/")
         self.assertEqual(1, len(response.json["data"]))
         self.assertEqual(200, response.status_code)
 
     def test_bad_get_party(self):
-        response = self.test_client.get("/api/party/10")
+        response = self.test_client.get("/api/party/10/")
         self.assertEqual(
             "Requested resource not found.",
             response.json["message"],
@@ -34,7 +34,7 @@ class PartyTest(TestCase):
 
     def test_get_party(self):
         self.test_create_party()
-        response = self.test_client.get("/api/party/1")
+        response = self.test_client.get("/api/party/1/")
         self.assertEqual("Christmas Party", response.json["data"]["name"])
         self.assertEqual(200, response.status_code)
 
@@ -47,7 +47,7 @@ class PartyTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -56,7 +56,7 @@ class PartyTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -69,7 +69,7 @@ class PartyTest(TestCase):
             "images": []
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -91,7 +91,7 @@ class PartyTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -100,7 +100,7 @@ class PartyTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -114,7 +114,7 @@ class PartyTest(TestCase):
             "images": []
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -134,7 +134,7 @@ class PartyTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -143,13 +143,13 @@ class PartyTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
         session_token = response.json["data"]["session_token"]
         response = self.test_client.delete(
-            "/api/party/1/delete",
+            "/api/party/1/delete/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -165,13 +165,13 @@ class PartyTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
         session_token = response.json["data"]["session_token"]
         response = self.test_client.delete(
-            "/api/party/1/delete",
+            "/api/party/1/delete/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token

@@ -9,7 +9,7 @@ from night_owl.auth import Session, validate_session
 party = Blueprint("party", __name__, url_prefix="/api")
 
 
-@party.route("/party/all", methods=["GET"])
+@party.route("/party/all/", methods=["GET"])
 def get_all_parties():
     return {
         "success": True,
@@ -17,7 +17,7 @@ def get_all_parties():
     }, 200
 
 
-@party.route("/party/<int:party_id>", methods=["GET"])
+@party.route("/party/<int:party_id>/", methods=["GET"])
 def get_a_party(party_id):
     return {
         "success": True,
@@ -25,7 +25,7 @@ def get_a_party(party_id):
     }, 200
 
 
-@party.route("/party/add", methods=["POST"])
+@party.route("/party/add/", methods=["POST"])
 @validate_token
 @validate_session
 def add_party():
@@ -50,7 +50,7 @@ def add_party():
         abort(500)
 
 
-@party.route("/party/<int:party_id>/delete", methods=["DELETE"])
+@party.route("/party/<int:party_id>/delete/", methods=["DELETE"])
 @validate_token
 @validate_session
 def delete_party(party_id):

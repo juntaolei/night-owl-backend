@@ -26,7 +26,7 @@ class ImageTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -35,7 +35,7 @@ class ImageTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -49,7 +49,7 @@ class ImageTest(TestCase):
             "images": [jpeg_image]
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -68,7 +68,7 @@ class ImageTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -77,7 +77,7 @@ class ImageTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -90,7 +90,7 @@ class ImageTest(TestCase):
             "admin_id": 1
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -99,7 +99,7 @@ class ImageTest(TestCase):
         )
         payload = dumps({"rating": 4.5, "images": [jpeg_image]})
         response = self.test_client.post(
-            "/api/party/1/review/add",
+            "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token

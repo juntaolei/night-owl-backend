@@ -30,7 +30,7 @@ def validate_session(f):
     return decorated_function
 
 
-@auth.route("/register", methods=["POST"])
+@auth.route("/register/", methods=["POST"])
 def register_user():
     try:
         data = RegistrationSchema().load(request.get_json())
@@ -50,7 +50,7 @@ def register_user():
         abort(500)
 
 
-@auth.route("/login", methods=["POST"])
+@auth.route("/login/", methods=["POST"])
 def login_user():
     try:
         data = LoginSchema().load(request.get_json())
@@ -67,7 +67,7 @@ def login_user():
         abort(500)
 
 
-@auth.route("/refresh", methods=["PATCH"])
+@auth.route("/refresh/", methods=["PATCH"])
 @validate_token
 def refresh_session():
     token = request.headers.get("Authorization")
@@ -77,7 +77,7 @@ def refresh_session():
     return {"success": True, "data": session.serialize()}, 201
 
 
-@auth.route("/logout", methods=["DELETE"])
+@auth.route("/logout/", methods=["DELETE"])
 @validate_token
 @validate_session
 def logout():

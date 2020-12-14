@@ -10,7 +10,7 @@ from night_owl.party import Party
 review = Blueprint("review", __name__, url_prefix="/api")
 
 
-@review.route("/party/<int:party_id>/review/all", methods=["GET"])
+@review.route("/party/<int:party_id>/review/all/", methods=["GET"])
 def get_reviews(party_id):
     party = Party.query.filter_by(id=party_id).first_or_404()
     return {
@@ -19,7 +19,7 @@ def get_reviews(party_id):
     }, 200
 
 
-@review.route("/party/<int:party_id>/review/add", methods=["POST"])
+@review.route("/party/<int:party_id>/review/add/", methods=["POST"])
 @validate_token
 @validate_session
 def add_review(party_id):
@@ -45,7 +45,7 @@ def add_review(party_id):
         abort(500)
 
 
-@review.route("/party/<int:party_id>/review/<int:review_id>/delete",
+@review.route("/party/<int:party_id>/review/<int:review_id>/delete/",
               methods=["DELETE"])
 @validate_token
 @validate_session

@@ -16,7 +16,7 @@ class ReviewTest(TestCase):
             db.create_all()
 
     def test_bad_get_all_reviews(self):
-        response = self.test_client.get("/api/party/2/review/all")
+        response = self.test_client.get("/api/party/2/review/all/")
         self.assertEqual(
             "Requested resource not found.",
             response.json["message"],
@@ -32,7 +32,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -41,7 +41,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -55,14 +55,14 @@ class ReviewTest(TestCase):
             "images": []
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
             },
             data=payload,
         )
-        response = self.test_client.get("/api/party/1/review/all")
+        response = self.test_client.get("/api/party/1/review/all/")
         self.assertEqual([], response.json["data"])
         self.assertEqual(200, response.status_code)
 
@@ -75,7 +75,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -84,7 +84,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -98,7 +98,7 @@ class ReviewTest(TestCase):
             "images": []
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -107,7 +107,7 @@ class ReviewTest(TestCase):
         )
         payload = dumps({})
         response = self.test_client.post(
-            "/api/party/1/review/add",
+            "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -129,7 +129,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -138,7 +138,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -152,7 +152,7 @@ class ReviewTest(TestCase):
             "images": []
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -161,7 +161,7 @@ class ReviewTest(TestCase):
         )
         payload = dumps({"rating": 4.5})
         response = self.test_client.post(
-            "/api/party/1/review/add",
+            "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -172,7 +172,7 @@ class ReviewTest(TestCase):
         self.assertEqual(201, response.status_code)
         payload = dumps({"rating": 4.5, "comment": "Very fun!"})
         response = self.test_client.post(
-            "/api/party/1/review/add",
+            "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -183,7 +183,7 @@ class ReviewTest(TestCase):
         self.assertEqual(201, response.status_code)
         payload = dumps({"rating": 4.5, "comment": "Very fun!", "images": []})
         response = self.test_client.post(
-            "/api/party/1/review/add",
+            "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -202,7 +202,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -211,7 +211,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -225,7 +225,7 @@ class ReviewTest(TestCase):
             "images": []
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -234,7 +234,7 @@ class ReviewTest(TestCase):
         )
         payload = dumps({"rating": 4.5})
         response = self.test_client.post(
-            "/api/party/1/review/add",
+            "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -242,7 +242,7 @@ class ReviewTest(TestCase):
             data=payload,
         )
         response = self.test_client.delete(
-            "/api/party/1/review/2/delete",
+            "/api/party/1/review/2/delete/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -254,7 +254,7 @@ class ReviewTest(TestCase):
         )
         self.assertEqual(404, response.status_code)
         response = self.test_client.delete(
-            "/api/party/2/review/2/delete",
+            "/api/party/2/review/2/delete/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -273,7 +273,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -282,13 +282,13 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
         session_token = response.json["data"]["session_token"]
         response = self.test_client.delete(
-            "/api/party/1/review/1/delete",
+            "/api/party/1/review/1/delete/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -309,7 +309,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -318,7 +318,7 @@ class ReviewTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -332,7 +332,7 @@ class ReviewTest(TestCase):
             "images": []
         })
         response = self.test_client.post(
-            "/api/party/add",
+            "/api/party/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -341,7 +341,7 @@ class ReviewTest(TestCase):
         )
         payload = dumps({"rating": 4.5})
         response = self.test_client.post(
-            "/api/party/1/review/add",
+            "/api/party/1/review/add/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token
@@ -349,7 +349,7 @@ class ReviewTest(TestCase):
             data=payload,
         )
         response = self.test_client.delete(
-            "/api/party/1/review/1/delete",
+            "/api/party/1/review/1/delete/",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": session_token

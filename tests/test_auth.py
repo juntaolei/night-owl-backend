@@ -24,7 +24,7 @@ class AuthTest(TestCase):
             "password": "a"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -37,7 +37,7 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -56,7 +56,7 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -72,7 +72,7 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/register",
+            "/api/register/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -86,7 +86,7 @@ class AuthTest(TestCase):
             "password": "asdaf3fasfjoiqhasfgaqa"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -97,7 +97,7 @@ class AuthTest(TestCase):
         self.assertEqual(404, response.status_code)
         payload = dumps({"username": "johndoe1", "password": "a"})
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -108,7 +108,7 @@ class AuthTest(TestCase):
         self.assertEqual(400, response.status_code)
         payload = dumps({"username": "johndoe1"})
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -125,7 +125,7 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
@@ -141,13 +141,13 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
         session_token = response.json["data"]["session_token"]
         response = self.test_client.patch(
-            "/api/refresh",
+            "/api/refresh/",
             headers={"Authorization": session_token},
         )
         self.assertEqual(
@@ -163,13 +163,13 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
         refresh_token = response.json["data"]["refresh_token"]
         response = self.test_client.patch(
-            "/api/refresh",
+            "/api/refresh/",
             headers={"Authorization": refresh_token},
         )
         self.assertEqual(str, type(response.json["data"]["session_token"]))
@@ -183,13 +183,13 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
         session_token = response.json["data"]["session_token"]
         response = self.test_client.patch(
-            "/api/refresh",
+            "/api/refresh/",
             headers={"Authorization": session_token},
         )
         self.assertEqual(
@@ -205,18 +205,18 @@ class AuthTest(TestCase):
             "password": "thisisasecurepassword"
         })
         response = self.test_client.post(
-            "/api/login",
+            "/api/login/",
             headers={"Content-Type": "application/json"},
             data=payload,
         )
         session_token = response.json["data"]["session_token"]
         response = self.test_client.delete(
-            "/api/logout",
+            "/api/logout/",
             headers={"Authorization": session_token},
         )
         self.assertEqual("User logged out.", response.json["message"])
         self.assertEqual(201, response.status_code)
-    
+
     def test_login_logout(self):
         self.test_register()
         for i in range(0, 10):
@@ -225,7 +225,7 @@ class AuthTest(TestCase):
                 "password": "thisisasecurepassword"
             })
             response = self.test_client.post(
-                "/api/login",
+                "/api/login/",
                 headers={"Content-Type": "application/json"},
                 data=payload,
             )
@@ -235,7 +235,7 @@ class AuthTest(TestCase):
             self.assertEqual(201, response.status_code)
             session_token = response.json["data"]["session_token"]
             response = self.test_client.delete(
-                "/api/logout",
+                "/api/logout/",
                 headers={"Authorization": session_token},
             )
             self.assertEqual("User logged out.", response.json["message"])
