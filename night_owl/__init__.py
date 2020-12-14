@@ -41,7 +41,6 @@ def create_app():
         with open(gcs_creds_filename, "w") as f:
             f.write(app.config.get("GCS_CREDENTIALS"))
         with app.app_context():
-            db.drop_all()
             db.create_all()
     except OSError:
         pass
