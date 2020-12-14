@@ -15,8 +15,11 @@ def upload(sql_entity, images):
     bucket = gcs.get_bucket(current_app.config.get("GCS_BUCKET"))
     for image in images:
         try:
-            ext = guess_extension(guess_type(image)[0])[1:]
-            filename = secure_filename(f"{token_urlsafe(32)}.{ext}")
+            image_type = guess_type(image)[0]
+            ext = guess_extension(image_type)
+            if ext is None:
+                ext = f".{image_type.split('/')[1]}"
+            filename = secure_filename(f"{token_urlsafe(32)}{ext}")
             image_string = sub("^data:image/.+;base64,", "", image)
             byte_image = b64decode(image_string)
             pil_image = PILImage.open(BytesIO(byte_image))
@@ -31,5 +34,6 @@ def upload(sql_entity, images):
             blob.upload_from_filename(
                 f"{current_app.instance_path}/{filename}")
             sql_entity.images.append(Image(url=blob.public_url))
-        except:
+        except Exception as err:
+            print(err)
             abort(500)
