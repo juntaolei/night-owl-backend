@@ -10,6 +10,14 @@ yourself.
 
 **Requirements**
 
+**Frontend**
+
+* Added AutoLayout.
+* Added UICollectionView and UITableView.
+* Added Navigation.
+* Used a Cocoa pod.
+* Added networking with backend API.
+
 **Backend**
 
 * Created a Swagger API documentation.
@@ -18,6 +26,11 @@ yourself.
 * Deployed to Heroku.
 
 This app's iOS frontend is available on this [GitHub repository](https://github.com/juntaolei/night-owl-ios).
+
+**App Screenshoots**
+
+![login](https://storage.googleapis.com/night-owl-img/login.png)
+![register](https://storage.googleapis.com/night-owl-img/register.png)
 
 ## Documentation
 
