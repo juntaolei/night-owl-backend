@@ -6,7 +6,7 @@
 Night Owl allows users to check where parties are as well as how fun those parties are,
 saving you from a potentially disappointing event. With this app, you can browse all available
 parties created by other users. You can read the reviews for a party and rate the party
-yourself.
+yourself. You can also upload images that attach to a party or a review.
 
 **Requirements**
 
@@ -23,7 +23,14 @@ yourself.
 * Created a Swagger API documentation.
 * Added a relational database schema with SQLAlchemy.
 * Added application endpoints with at least one GET, POST, and DELETE requests that interface with the database.
-* Deployed to Heroku.
+* Deployed application to Heroku and added Postgres.
+
+**Features**
+
+**Backend**
+
+* Implemented HTTP session authentication using timed JSON Web Signatures.
+* Implemented image upload to Google Cloud Storage.
 
 This app's iOS frontend is available on this [GitHub repository](https://github.com/juntaolei/night-owl-ios).
 
@@ -71,6 +78,6 @@ Creating a release on GitHub will automatically create an image and deploy it to
 Add the following configuration variables on Heroku:
 
 * SECRET_KEY
-* DATABASE_URL (Heroku PostgreSQL)
+* DATABASE_URL (Heroku PostgreSQL because some providers like Google Cloud do not allow traffic from non-static IP)
 * GCS_BUCKET
 * GCS_CREDENTIALS (Google Service Account)
